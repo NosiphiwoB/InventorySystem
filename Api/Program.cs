@@ -20,9 +20,18 @@ app.MapPost("/addUser", async context =>
 
 });
 //Warehouse
-app.MapGet("/get-warehouse/:id", () => "Get one warehouse");
+app.MapPost("/register-warehouse", async context =>
+{
+    StreamReader reader = new StreamReader(context.Request.Body);
+    var data = await reader.ReadToEndAsync();
+    WarehouseController controller = new WarehouseController();
+    Warehouse warehouse = JsonSerializer.Deserialize<Warehouse>(data);
+    var created = controller.addWarehouse(warehouse);
+
+});
+
 app.MapGet("/list-warehouses", () => "All warehouses");
-app.MapPost("/register-warehouse", () => "Add warehouse");
+app.MapGet("/get-warehouse/:id", () => "Get one warehouse");
 app.MapPost("/remove-warehouse", () => "Add warehouse");
 
 app.Run();
